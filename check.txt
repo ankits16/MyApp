@@ -1,0 +1,1 @@
+Unable to load schema from 'vscode://schemas/settings/folder': cannot open vscode://schemas/settings/folder. Detail: Unable to resolve text model content for resource vscode://schemas/settings/folder.
