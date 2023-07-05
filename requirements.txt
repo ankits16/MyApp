@@ -1,5 +1,7 @@
 Django==4.0
 djangorestframework==3.13.1
 django-filter==21.1
+#jwt
+djangorestframework-simplejwt
 #prostgres
 psycopg2_binary==2.9.2
