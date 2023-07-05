@@ -7,8 +7,8 @@ class UserSerializer(serializers.ModelSerializer):
         read_only=True,
         format='hex'
         )
-    created_on = serializers.DateTimeField(read_only=True)
-    updated_on = serializers.DateTimeField(read_only=True)
+    created = serializers.DateTimeField(read_only=True)
+    updated = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = User
@@ -18,8 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'first_name',
             'last_name',
-            'created_on',
-            'updated_on',
+            'created',
+            'updated',
         ]
         read_only_fields = ['is_active']
     

@@ -14,6 +14,7 @@ class UserManager(BaseUserManager):
             raise Http404
     
     def create_user(self, username, email, password=None, **kwargs):
+        '''Create a user from the given username, email and password'''
         if username is None:
             raise TypeError("username must not be empty")
         if email is None:
@@ -60,8 +61,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

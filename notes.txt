@@ -1,1 +1,8 @@
-1) Add a deafault enviornment to project
+1) Add a default enviornment to project
+
+
+
+
+
+**Project Notes**:
+1. 
