@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
 
 from core.abstract.viewsets import AbstractViewSet
 from core.post.models import Post
@@ -24,3 +25,26 @@ class PostViewSet(AbstractViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    # When detail=True
+    #  the action will be accessible at a URL like /books/{id}/custom_action/
+    #  when detail=False
+    # the action will be accessible at a URL like /books/custom_action/.
+    # action is a decorator
+    # In Python, a decorator is a special type of function that can modify or enhance the behavior of another function or class
+    @action(methods=['post'], detail=True)
+    def like(self, request, *args, **kwargs):
+        post = self.get_object()
+        user = self.request.user
+        user.like(post)
+        serializer = self.serializer_class(post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(methods=['post'], detail=True)
+    def remove_like(self, request, *args, **kwargs):
+        post = self.get_object()
+        user = self.request.user
+        user.remove_like(post)
+        serializer = self.serializer_class(post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

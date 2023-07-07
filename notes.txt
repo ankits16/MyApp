@@ -6,3 +6,7 @@
 
 **Project Notes**:
 1. 
+
+Migrations related issues
+ : python manage.py showmigrations
+ : python manage.py migrate core_post --fake
