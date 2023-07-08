@@ -7,3 +7,5 @@ djangorestframework-simplejwt
 drf-nested-routers
 #prostgres
 psycopg2_binary==2.9.2
+#cors
+django-cors-headers

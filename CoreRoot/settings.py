@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     'core.user',
     'core.auth',
     'core.post',
-    'core.comment'
+    'core.comment',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -154,3 +156,9 @@ SIMPLE_JWT = {
 }
 if settings.DEBUG:
     SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'] = timedelta(hours=1)
+
+# cors
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
