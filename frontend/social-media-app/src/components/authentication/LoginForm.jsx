@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../helpers/axios";
-import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+// import { BASE_URL } from "../../helpers/axios";
+// import axios from "axios";
 import { Form, Button} from "react-bootstrap";
+import { useUserActions } from "../../hooks/user.actions";
 
 export default function LoginForm() {
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [form, setForm] = useState({});
   const [error, setError] = useState(null);
+  const userActions = useUserActions();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,22 +24,12 @@ export default function LoginForm() {
       email: form.email,
       password: form.password,
     };
-    axios
-      .post(BASE_URL + "/auth/login/", data)
-      .then((response) => {
-        localStorage.setItem(
-          "auth",
-          JSON.stringify({
-            accessToken: response.data.access,
-            refresh: response.data.refresh,
-            user: response.data.user,
-          })
-        );
-        navigate("/");
-      })
+    userActions.login(data)
       .catch((error) => {
         if (error.message) {
           setError(error.request.response);
+        }else {
+            setError('Failed to login')
         }
       });
   };

@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { getUser } from "../hooks/user.actions";
 
 function ProtectedRoute({ children }) {
-  const authData = JSON.parse(localStorage.getItem("auth"));
-  const user = authData ? authData.user : null;
+  const user = getUser();
   return user ? <>{children}</> : <Navigate to="/login" />;
 }
 
