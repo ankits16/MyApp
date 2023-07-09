@@ -40,7 +40,7 @@ class UserManager(BaseUserManager, AbstractManager):
 
 
 
-class User(AbstractModel, AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, AbstractModel, PermissionsMixin):
     
     username = models.CharField(
         max_length=100,
@@ -50,6 +50,7 @@ class User(AbstractModel, AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(db_index=True, unique=True)
+    is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     posts_liked = models.ManyToManyField("core_post.Post", related_name="liked_by")
@@ -74,3 +75,4 @@ class User(AbstractModel, AbstractBaseUser, PermissionsMixin):
     
     def has_liked(self, post):
         return self.posts_liked.filter(pk=post.pk).exists()
+    
