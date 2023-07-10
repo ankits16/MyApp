@@ -27,7 +27,7 @@ export default function LoginForm() {
     userActions.login(data)
       .catch((error) => {
         if (error.message) {
-          setError(error.request.response);
+          setError(`Login Failed - ${error.message}`);
         }else {
             setError('Failed to login')
         }

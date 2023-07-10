@@ -54,6 +54,7 @@ const refreshAuthLogic = async (failedRequest) => {
 createAuthRefreshInterceptor(axiosService, refreshAuthLogic);
 
 export function fetcher(url) {
+  console.log(`*** fetcher is called ${Date.now()}`);
   return axiosService.get(url).then((response) => response.data);
 }
 

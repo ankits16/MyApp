@@ -14,7 +14,7 @@ const Navigationbar = () => {
                     <NavDropdown
                     title ={
                         <Image 
-                        src = {randomAvatar}
+                        src = {randomAvatar()}
                         roundedCircle
                         width={36}
                         height={36}
