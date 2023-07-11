@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Dropdown, Form, Modal, Button } from "react-bootstrap";
-import CreatePost from "./CreatePost";
 import Toaster from "../Toaster";
 import axiosService from "../../helpers/axios";
 

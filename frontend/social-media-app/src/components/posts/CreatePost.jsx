@@ -5,7 +5,7 @@ import axiosService from "../../helpers/axios";
 import Toaster from "../Toaster";
 
 const CreatePost = (props) => {
-  // const {refresh} = props;
+  const {refresh} = props;
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({});
   const [validated, setValidated] = useState(false);
@@ -43,7 +43,7 @@ const CreatePost = (props) => {
         setToastType("success");
         setShowToast(true);
         setForm({});
-        // refresh()
+        refresh()
       })
       .catch((err) => {
         setShowToast(true);

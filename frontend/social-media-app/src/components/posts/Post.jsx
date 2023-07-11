@@ -12,7 +12,7 @@ import UpdatePost from "./UpdatePost";
 const Post = (props) => {
   const { post, refresh } = props;
   const [showToast, setShowToast] = useState(false);
-  const handleLikeClick = (acion) => {};
+  // const handleLikeClick = (acion) => {};
   const user = getUser();
   const MoreToggleIcon = React.forwardRef(({ onClick }, ref) => {
     return (
