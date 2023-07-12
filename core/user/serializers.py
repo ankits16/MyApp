@@ -14,6 +14,7 @@ class UserSerializer(AbstractSerializer):
             'last_name',
             'created',
             'updated',
+            'name'
         ]
         read_only_fields = ['is_active']
     
