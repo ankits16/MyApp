@@ -5,12 +5,33 @@ import { Card, Dropdown, Image } from "react-bootstrap";
 import { randomAvatar } from "../../utils";
 import { format } from "timeago.js";
 import MoreToggleIcon from "../menu/MoreToggleIcon";
+import axiosService from "../../helpers/axios";
 
 const Comment = (props) => {
   const { postId, comment, refresh } = props;
   const { toaster, setToaster } = useContext(Context);
   const user = getUser();
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    axiosService.delete(`/post/${postId}/comment/${comment.id}`)
+    .then((response) =>{
+        setToaster({
+            type: 'danger',
+            message: `Comment deleted.`,
+            show: true,
+            title: 'Delete comment'
+        })
+        refresh();
+    })
+    .catch((error) => {
+        setToaster({
+            type: 'warning',
+            message: `Delete comment failed: ${error.message}`,
+            show: true,
+            title: 'Delete comment'
+        })
+    })
+    ;
+  };
   return (
     <Card className="rounded-3 my-2">
       <Card.Body>
