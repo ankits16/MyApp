@@ -8,12 +8,13 @@ import Toaster from "../Toaster";
 import { getUser } from "../../hooks/user.actions";
 import { Link } from "react-router-dom";
 import UpdatePost from "./UpdatePost";
-
+import ReactLinkify from "react-linkify";
 const Post = (props) => {
-  const { post, refresh } = props;
+  const { post, refresh, isSinglePost } = props;
   const [showToast, setShowToast] = useState(false);
   // const handleLikeClick = (acion) => {};
   const user = getUser();
+
   const MoreToggleIcon = React.forwardRef(({ onClick }, ref) => {
     return (
       <Link
@@ -28,6 +29,7 @@ const Post = (props) => {
       </Link>
     );
   });
+
   const handleDelete = () => {
     axiosService
       .delete(`/post/${post.id}/`)
@@ -37,6 +39,15 @@ const Post = (props) => {
       })
       .catch((error) => console.log(error.message));
   };
+
+  function openLinkInNewTab(href, text, key) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" key={key}>
+        {text}
+      </a>
+    );
+  }
+
   return (
     <>
       <Card className="rounded-3 my-4">
@@ -62,7 +73,7 @@ const Post = (props) => {
                 <Dropdown.Toggle as={MoreToggleIcon} />
                 <Dropdown.Menu>
                   {/* <Dropdown.Item>Update</Dropdown.Item> */}
-                  <UpdatePost post={post} refresh={refresh}/>
+                  <UpdatePost post={post} refresh={refresh} />
                   <Dropdown.Item className="text-danger" onClick={handleDelete}>
                     Delete
                   </Dropdown.Item>
@@ -71,7 +82,39 @@ const Post = (props) => {
             </div>
           )}
         </Card.Title>
-        <Card.Text>{post.body}</Card.Text>
+        <Card.Text>
+          <ReactLinkify componentDecorator={openLinkInNewTab}>
+            {post.body}
+          </ReactLinkify>
+        </Card.Text>
+        <div className="d-flex flex-row justify-content-between">
+          <div className="d-flex flex-row">
+            <LikeFilled
+              style={{
+                color: "#fff",
+                backgroundColor: "#0D6EFD",
+                borderRadius: "50%",
+                width: "18px",
+                height: "18px",
+                fontSize: "75%",
+                padding: "2px",
+                margin: "3px",
+              }}
+            />
+            <p className="ms-1 fs-6">
+              <small>{post.likes_count} like</small>
+            </p>
+          </div>
+          {!isSinglePost && (
+            <p className="ms-1 fs-6">
+              <small>
+                <Link to={`/post/${post.id}/`}>
+                  {post.comments_count} comments
+                </Link>
+              </small>
+            </p>
+          )}
+        </div>
         <Card.Footer
           className="d-flex bg-white w-50
          justify-content-between border-0"
@@ -93,20 +136,22 @@ const Post = (props) => {
               <small>{post.like_count} like</small>
             </p>
           </div>
-          <div className="d-flex flex-row">
-            <CommentOutlined
-              style={{
-                width: "24px",
-                height: "24px",
-                padding: "2px",
-                fontSize: "20px",
-                color: "#C4C4C4",
-              }}
-            />
-            <p className="ms-1 mb-0">
-              <small>Comment</small>
-            </p>     
-          </div>
+          {!isSinglePost && (
+            <div className="d-flex flex-row">
+              <CommentOutlined
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  padding: "2px",
+                  fontSize: "20px",
+                  color: "#C4C4C4",
+                }}
+              />
+              <p className="ms-1 mb-0">
+                <small>Comment</small>
+              </p>
+            </div>
+          )}
         </Card.Footer>
       </Card>
       <Toaster

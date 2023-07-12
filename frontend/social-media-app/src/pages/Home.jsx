@@ -1,5 +1,5 @@
 import React from "react";
-import ParentComponent from "./TestComponents";
+// import ParentComponent from "./TestComponents";
 import Layout from "../components/Layout";
 import { Col, Image, Row } from "react-bootstrap";
 import { randomAvatar } from "../utils";
@@ -31,14 +31,14 @@ export default function Home() {
           <Row className="my-4">
             {posts.data?.results.map((post, index) => {
               // <div>{post.body}</div>;
-              return <Post key={index} post={post} refresh={posts.mutate}/>
+              return <Post key={index} post={post} refresh={posts.mutate} isSinglePost={false}/>
             })}
           </Row>
         </Col>
       </Row>
       <h1>Profile</h1>
       <p>Welcome Home !</p>
-      <ParentComponent />
+      {/* <ParentComponent /> */}
     </Layout>
   );
 }
