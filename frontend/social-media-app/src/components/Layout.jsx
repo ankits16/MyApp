@@ -2,13 +2,14 @@ import React, { createContext, useMemo, useState } from "react";
 import Navigationbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import Toaster from "./Toaster";
 
 export const Context = createContext("unknown");
 const Layout = (props) => {
   const { hasNavigationBack } = props;
   const [toaster, setToaster] = useState({
     title: "",
-    show: true,
+    show: false,
     message: "",
     type: "",
   });
@@ -32,6 +33,16 @@ const Layout = (props) => {
       )}
       <div className="container m-5">{props.children}</div>
     </div>
+    <Toaster
+    title={toaster.title}
+    message={toaster.message}
+    type={toaster.type}
+    showToast={toaster.show}
+    onClose={() =>{
+      console.log(`close toase`)
+      setToaster({...toaster, show: false})
+    }}
+    />
     </Context.Provider>
   );
 };

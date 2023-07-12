@@ -9,26 +9,12 @@ import { getUser } from "../../hooks/user.actions";
 import { Link } from "react-router-dom";
 import UpdatePost from "./UpdatePost";
 import ReactLinkify from "react-linkify";
+import MoreToggleIcon from "../menu/MoreToggleIcon";
 const Post = (props) => {
   const { post, refresh, isSinglePost } = props;
   const [showToast, setShowToast] = useState(false);
   // const handleLikeClick = (acion) => {};
   const user = getUser();
-
-  const MoreToggleIcon = React.forwardRef(({ onClick }, ref) => {
-    return (
-      <Link
-        href="#"
-        ref={ref}
-        onClick={(e) => {
-          e.preventDefault();
-          onClick(e);
-        }}
-      >
-        <MoreOutlined />
-      </Link>
-    );
-  });
 
   const handleDelete = () => {
     axiosService

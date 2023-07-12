@@ -19,6 +19,7 @@ const CreateComment = (props) => {
       event.stopPropagation();
       return;
     }
+    setValidated(true)
     const data = {
       author: user.id,
       body: form.body,

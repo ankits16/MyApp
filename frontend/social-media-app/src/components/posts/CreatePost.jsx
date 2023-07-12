@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import {getUser} from "../../hooks/user.actions";
 import axiosService from "../../helpers/axios";
 import Toaster from "../Toaster";
+import { Context } from "../Layout";
 
 const CreatePost = (props) => {
   const {refresh} = props;
+  const {setToaster} = useContext(Context);
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({});
   const [validated, setValidated] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("");
+  // const [showToast, setShowToast] = useState(false);
+  // const [toastMessage, setToastMessage] = useState("");
+  // const [toastType, setToastType] = useState("");
   const user = getUser();
 
   const handleClose = () => {
@@ -39,16 +41,25 @@ const CreatePost = (props) => {
       .post("/post/", data)
       .then(() => {
         handleClose();
-        setToastMessage("Post created 🚀");
-        setToastType("success");
-        setShowToast(true);
+        setToaster({
+          title: "Post!",
+          type: "success",
+          message: "Post created 🚀",
+          show: true
+        })
+        // setToastMessage("Post created 🚀");
+        // setToastType("success");
+        // setShowToast(true);
         setForm({});
         refresh()
       })
       .catch((err) => {
-        setShowToast(true);
-        setToastMessage(`An error occurred. ${err.message}`);
-        setToastType("danger");
+        setToaster({
+          title: "Post!",
+          type: "warning",
+          message: `An error occurred. ${err.message}`,
+          show: true
+        })
       });
   };
   return (
@@ -90,15 +101,6 @@ const CreatePost = (props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Toaster 
-      title = 'Post!'
-      message={toastMessage}
-      showToast={showToast}
-      type={toastType}
-      onClose= {()=> {
-        console.log('hide toast');
-        setShowToast(false)}
-      } />
     </>
   );
 };

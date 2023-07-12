@@ -35,7 +35,7 @@ const Comment = (props) => {
   return (
     <Card className="rounded-3 my-2">
       <Card.Body>
-        <Card.Title className="d-flex flex-row justify-content-center">
+        <Card.Title className="d-flex flex-row justify-content-between">
           <div className="d-flex flex-row">
             <Image
               src={randomAvatar()}
