@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'core.auth',
     'core.post',
     'core.comment',
+    'core.mediaItems',
     'corsheaders',
 ]
 
@@ -152,7 +153,7 @@ REST_FRAMEWORK = {
 
 # extend default expiry of JWT access token
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=6000),
     # 'AUTH_COOKIE_SECURE': True,
     # 'AUTH_COOKIE_HTTP_ONLY': True,
 }

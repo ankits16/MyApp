@@ -4,12 +4,14 @@ from core.abstract.serializers import AbstractSerializer
 from core.post.models import Post
 from core.user.models import User
 from core.user.serializers import UserSerializer
+from core.mediaItems.serializers import MediaItemSerializer
 
 class PostSerializer(AbstractSerializer):
     # this is to ensure that public_id of the user is returned instead of complet user object
     author = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='public_id')
     liked = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
+    media_items = MediaItemSerializer(many=True, read_only=True)
 
     #Django Rest Framework, the framework relies on certain naming conventions for serializer validation methods to work properly. 
     #By default, Django Rest Framework expects validation methods to be named in the format 
@@ -42,8 +44,8 @@ class PostSerializer(AbstractSerializer):
     
     def get_likes_count(self, instance):
         return instance.liked_by.count()
-    
+     
     class Meta:
         model = Post
-        fields = ['id', 'author', 'body', 'edited', 'liked', 'likes_count', 'created', 'updated']
+        fields = ['id', 'author', 'body', 'media_items', 'edited', 'liked', 'likes_count', 'created', 'updated']
         read_only_fields = ['edited']
