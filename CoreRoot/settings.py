@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-y=t5-arepy8$g-9^$2kq)v4k8ibbeq^nplokl9h_t%$@zqe6#&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -48,9 +49,11 @@ INSTALLED_APPS = [
     'core.comment',
     'core.mediaItems',
     'corsheaders',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',# for debug
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -67,6 +70,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        # "BACKEND": "django.template.backends.django.DjangoTemplates",
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -164,4 +168,11 @@ if settings.DEBUG:
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000"
+]
+
+# this is for django debug toolbar
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
 ]
