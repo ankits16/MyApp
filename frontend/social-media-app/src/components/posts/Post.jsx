@@ -53,7 +53,7 @@ const Post = (props) => {
               </p>
             </div>
           </div>
-          {user.username === post.author.username && (
+          {user.id === post.author.id && (
             <div>
               <Dropdown>
                 <Dropdown.Toggle as={MoreToggleIcon} />
