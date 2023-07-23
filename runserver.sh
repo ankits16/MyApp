@@ -20,3 +20,4 @@ python manage.py runserver $port
 # to un this script
 #chmod +x runserver.sh
 # ./runserver.sh
+# lsof -i :PORT_NUMBER : kill -9 pid - for maual kill

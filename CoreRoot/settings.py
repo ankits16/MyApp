@@ -121,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -158,7 +158,7 @@ SIMPLE_JWT = {
     # 'AUTH_COOKIE_HTTP_ONLY': True,
 }
 if settings.DEBUG:
-    SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'] = timedelta(hours=1)
+    SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'] = timedelta(hours=24)
 
 # cors
 CORS_ALLOWED_ORIGINS = [

@@ -1,1 +1,27 @@
-Unable to load schema from 'vscode://schemas/settings/folder': cannot open vscode://schemas/settings/folder. Detail: Unable to resolve text model content for resource vscode://schemas/settings/folder.
+ {
+            "id": "6a7554226cd54dab92d8d90c965ee566",
+            "author": {
+                "id": "c14197c6fe434fc7b34396b35cafd381",
+                "username": "a2",
+                "email": "a@2.com",
+                "first_name": "Ankit",
+                "last_name": "Sachan",
+                "created": "2023-07-09T13:37:30.683897+05:30",
+                "updated": "2023-07-09T13:37:30.683933+05:30",
+                "name": "Ankit Sachan"
+            },
+            "body": "A simple posted created 22nd Jul",
+            "media_items": [
+                {
+                    post_id: "6a7554226cd54dab92d8d90c965ee566",
+                    url: "http://xyz/post/path",
+                    meta: {},
+                    "type" : "video",
+                }
+            ],
+            "edited": false,
+            "liked": false,
+            "likes_count": 0,
+            "created": "2023-07-22T10:12:34.260586+05:30",
+            "updated": "2023-07-22T10:12:34.260603+05:30"
+        },

@@ -13,7 +13,8 @@ class PostSerializer(AbstractSerializer):
     likes_count = serializers.SerializerMethodField()
     media_items = MediaItemSerializer(many=True, read_only=True)
 
-    #Django Rest Framework, the framework relies on certain naming conventions for serializer validation methods to work properly. 
+    #Django Rest Framework, the framework relies on certain naming conventions 
+    # for serializer validation methods to work properly. 
     #By default, Django Rest Framework expects validation methods to be named in the format 
     #validate_<field_name>, where <field_name> 
     #is the name of the field being validated.
@@ -27,7 +28,8 @@ class PostSerializer(AbstractSerializer):
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         author = User.objects.get_object_by_public_id(rep['author'])
-        rep['author'] = UserSerializer(author).data
+        author_data = UserSerializer(author).data
+        rep['author'] = {'email' : author_data['email'], 'id': author_data['id']} #UserSerializer(author).data
         return rep
     
     def update(self, instance, validated_data):

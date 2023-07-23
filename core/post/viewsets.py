@@ -38,7 +38,7 @@ class PostViewSet(AbstractViewSet):
             url = self.generate_media_item_url()
 
             # Associate the Post with the MediaItem and set the URL
-            media_item_data['post'] = post.id
+            media_item_data['post'] = post.public_id
             media_item_data['url'] = url
 
             media_item_serializer = MediaItemSerializer(data=media_item_data)
@@ -46,6 +46,7 @@ class PostViewSet(AbstractViewSet):
             media_item = media_item_serializer.save()
 
             media_items.append(media_item)
+
 
         return Response(
             {
