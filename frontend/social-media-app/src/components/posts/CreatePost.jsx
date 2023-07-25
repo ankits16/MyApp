@@ -30,7 +30,7 @@ const CreatePost = (props) => {
         ...form.mediaItems,
         {
           type: "",
-          meta: "",
+          meta: {},
           file: null,
           index: uuidv4(), // Generate a unique identifier for each media item
         },
@@ -40,8 +40,17 @@ const CreatePost = (props) => {
   };
 
   const handleMediaItemChange = (name, value, index) => {
-    const updatedMediaItems = form.mediaItems.map((mediaItem) =>
-      mediaItem.index === index ? { ...mediaItem, [name]: value } : mediaItem
+    const updatedMediaItems = form.mediaItems.map((mediaItem) =>{
+      if (name === 'media-item-notes'){
+        var updatedMeta = {...mediaItem.meta}
+        updatedMeta['notes'] = value;
+        var updatedMediaItem = {...mediaItem}
+        updatedMediaItem.meta = updatedMeta
+        return updatedMediaItem;
+      }
+      return mediaItem.index === index ? { ...mediaItem, [name]: value } : mediaItem
+    }
+      
     );
     setForm({ ...form, mediaItems: updatedMediaItems });
   };
@@ -80,8 +89,8 @@ const CreatePost = (props) => {
     const data = {
       author: user.id,
       body: form.body,
+      media_items: form.mediaItems
     };
-
     axiosService
       .post("/post/", data)
       .then(() => {
@@ -95,7 +104,9 @@ const CreatePost = (props) => {
         // setToastMessage("Post created 🚀");
         // setToastType("success");
         // setShowToast(true);
-        setForm({});
+        setForm({
+          body: "",
+        mediaItems: [],});
         refresh();
       })
       .catch((err) => {
@@ -128,7 +139,7 @@ const CreatePost = (props) => {
                 name="body"
                 value={form.body}
                 onChange={(e) => {
-                  setForm({ ...e, body: e.target.value });
+                  setForm({ ...form, body: e.target.value });
                 }}
                 as="textarea"
                 rows={3}

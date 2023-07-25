@@ -115,11 +115,11 @@ const MediaItemInput = ({ mediaItem, onChange, onDelete }) => {
         <Row>
           <Col xs={12}>
             <Form.Group controlId={`meta-${mediaItem.index}`}>
-              <Form.Label>Meta</Form.Label>
+              <Form.Label>Additional Notes</Form.Label>
               <Form.Control
                 type="text"
-                name="meta"
-                value={mediaItem.meta}
+                name="media-item-notes"
+                value={mediaItem.meta['media-item-notes']}
                 onChange={handleInputChange}
                 required
               />
