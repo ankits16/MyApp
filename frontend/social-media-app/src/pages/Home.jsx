@@ -26,7 +26,7 @@ export default function Home() {
                 className="my-2"
               />
             </Col>
-            <Col sm={10} className="flex-grow-1">
+            <Col sm={20} className="flex-grow-1">
               <CreatePost refresh={posts.mutate}/>
             </Col>
           </Row>

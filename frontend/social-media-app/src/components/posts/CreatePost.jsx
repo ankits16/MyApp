@@ -1,20 +1,65 @@
 import React, { useContext, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
-import {getUser} from "../../hooks/user.actions";
+import { Button, Card, Form, Modal } from "react-bootstrap";
+import { getUser } from "../../hooks/user.actions";
 import axiosService from "../../helpers/axios";
 import Toaster from "../Toaster";
 import { Context } from "../Layout";
+import MediaItemInput from "./MediaItemInput";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { v4 as uuidv4 } from "uuid";
 
 const CreatePost = (props) => {
-  const {refresh} = props;
-  const {setToaster} = useContext(Context);
+  const { refresh } = props;
+  const { setToaster } = useContext(Context);
   const [show, setShow] = useState(false);
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({
+    body: "",
+    mediaItems: [],
+  });
   const [validated, setValidated] = useState(false);
   // const [showToast, setShowToast] = useState(false);
   // const [toastMessage, setToastMessage] = useState("");
   // const [toastType, setToastType] = useState("");
   const user = getUser();
+  // const [mediaItems, setMediaItems] = useState([]);
+
+  const handleAddMediaItem = () => {
+    setForm({
+      ...form,
+      mediaItems: [
+        ...form.mediaItems,
+        {
+          type: "",
+          meta: "",
+          file: null,
+          index: uuidv4(), // Generate a unique identifier for each media item
+        },
+      ],
+    });
+    console.log("Add media item");
+  };
+
+  const handleMediaItemChange = (name, value, index) => {
+    const updatedMediaItems = form.mediaItems.map((mediaItem) =>
+      mediaItem.index === index ? { ...mediaItem, [name]: value } : mediaItem
+    );
+    setForm({ ...form, mediaItems: updatedMediaItems });
+  };
+
+  const handleDeleteMediaItem = (index) => {
+    const updatedMediaItems = form.mediaItems.filter(
+      (mediaItem) => mediaItem.index !== index
+    );
+    setForm({ ...form, mediaItems: updatedMediaItems });
+  };
+
+  // const handleMediaInputChange = (index, name, value) => {
+  //   setMediaItems((prevMediaItems) => {
+  //     const updatedMediaItems = [...prevMediaItems];
+  //     updatedMediaItems[index] = { ...updatedMediaItems[index], [name]: value };
+  //     return updatedMediaItems;
+  //   });
+  // };
 
   const handleClose = () => {
     setShow(false);
@@ -45,21 +90,21 @@ const CreatePost = (props) => {
           title: "Post!",
           type: "success",
           message: "Post created 🚀",
-          show: true
-        })
+          show: true,
+        });
         // setToastMessage("Post created 🚀");
         // setToastType("success");
         // setShowToast(true);
         setForm({});
-        refresh()
+        refresh();
       })
       .catch((err) => {
         setToaster({
           title: "Post!",
           type: "warning",
           message: `An error occurred. ${err.message}`,
-          show: true
-        })
+          show: true,
+        });
       });
   };
   return (
@@ -76,7 +121,7 @@ const CreatePost = (props) => {
         <Modal.Header closeButton className="border-0">
           <Modal.Title>Create Post</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="borde-0">
+        <Modal.Body className="border-0">
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Control
@@ -89,6 +134,22 @@ const CreatePost = (props) => {
                 rows={3}
               />
             </Form.Group>
+            <h4>Media Items</h4>
+            {form.mediaItems.map((mediaItem, index) => (
+              <Card key={index} className="mb-3">
+                <Card.Body>
+                  <MediaItemInput
+                    key={mediaItem.index}
+                    mediaItem={mediaItem}
+                    onChange={handleMediaItemChange}
+                    onDelete={() => handleDeleteMediaItem(index)}
+                  />
+                </Card.Body>
+              </Card>
+            ))}
+            <Button variant="primary" onClick={handleAddMediaItem}>
+              <AddCircleOutlineIcon />
+            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
