@@ -41,16 +41,26 @@ const CreatePost = (props) => {
 
   const handleMediaItemChange = (name, value, index) => {
     const updatedMediaItems = form.mediaItems.map((mediaItem) => {
-      if (name === "media-item-notes") {
+      if (mediaItem.index === index){
+        //update existing 
         var updatedMeta = { ...mediaItem.meta };
-        updatedMeta["notes"] = value;
         var updatedMediaItem = { ...mediaItem };
-        updatedMediaItem.meta = updatedMeta;
-        return updatedMediaItem;
+        if (name === "media-item-notes") {
+          updatedMeta["notes"] = value;
+          updatedMediaItem.meta = updatedMeta;
+          return updatedMediaItem;
+        }
+        if (name  === "file"){
+          updatedMeta["local_identifier"] = index;
+          updatedMediaItem.meta = updatedMeta;
+          updatedMediaItem.file = value;
+          updatedMediaItem.file_name = value.name;
+          return updatedMediaItem;
+        }
+        return { ...mediaItem, [name]: value }
+      }else{
+        return mediaItem
       }
-      return mediaItem.index === index
-        ? { ...mediaItem, [name]: value }
-        : mediaItem;
     });
     setForm({ ...form, mediaItems: updatedMediaItems });
   };
@@ -78,6 +88,45 @@ const CreatePost = (props) => {
     setShow(true);
   };
 
+  const callAfterPostCreation = () => {
+    handleClose();
+    setToaster({
+      title: "Post!",
+      type: "success",
+      message: "Post created 🚀",
+      show: true,
+    });
+    setForm({
+      body: "",
+      mediaItems: [],
+    });
+    refresh();
+  };
+
+  const uploadFileForMediaItem = async (filePath, file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("path", filePath);
+      const uploadResponse = await axiosService.post("media/upload/", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the correct content type for file upload
+        }
+      });
+
+      if (uploadResponse.status >= 200 && uploadResponse.status < 300) {
+        return true; // File uploaded successfully
+      } else {
+        console.error("Failed to upload file:", uploadResponse);
+        return false; // File upload failed
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Error occurred during file upload:", error);
+      return false;
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const createPostForm = event.currentTarget;
@@ -93,19 +142,65 @@ const CreatePost = (props) => {
     };
     axiosService
       .post("/post/", data)
-      .then(() => {
-        handleClose();
-        setToaster({
-          title: "Post!",
-          type: "success",
-          message: "Post created 🚀",
-          show: true,
-        });
-        setForm({
-          body: "",
-          mediaItems: [],
-        });
-        refresh();
+      .then(async (response) => {
+        // After the post is created, handle media item uploads
+        if (response.status === 201) {
+          const responseData = response.data;
+          // Handle media item uploads after post creation
+          const postMediaItems = responseData.post.media_items;
+          const uploadPromises = postMediaItems.map((mediaItem) => {
+            // Check if the media item exists in the form with a file
+            const formMediaItem = data.media_items.find(
+              (item) => mediaItem.meta.local_identifier === item.index
+            );
+            if (
+              formMediaItem &&
+              formMediaItem.file &&
+              mediaItem.url &&
+              mediaItem.url.file_path
+            ) {
+              return uploadFileForMediaItem(
+                mediaItem.url.file_path,
+                formMediaItem.file
+              );
+            }
+            return Promise.resolve(false);
+          });
+
+          // Wait for all media item uploads to complete
+          const uploadResults = await Promise.all(uploadPromises);
+
+          // Check if any uploads failed
+          const allUploadsSuccessful = uploadResults.every(
+            (result) => result === true
+          );
+
+          if (allUploadsSuccessful) {
+            console.log("All media items uploaded successfully");
+
+            // Optionally, handle any further actions after the media items are uploaded
+            // Call the callback function here
+            callAfterPostCreation();
+          } else {
+            console.error("One or more media item uploads failed.");
+            // Optionally, handle the error or display an error message
+            setToaster({
+              title: "Post!",
+              type: "warning",
+              message: `Media items upload failed`,
+              show: true,
+            });
+          }
+        } else {
+          setToaster({
+            title: "Post!",
+            type: "warning",
+            message: `An error occurred. ${response.status}`,
+            show: true,
+          });
+        }
+
+        // callAfterPostCreation();
       })
       .catch((err) => {
         setToaster({

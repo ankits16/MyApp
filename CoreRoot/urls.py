@@ -20,7 +20,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include(("core.routers", "core"), namespace="core-api")),
-    path("media/", include("core.media_manager.urls")),  # Include the 'media_upload' app's URLs
+    path("api/media/", include("core.media_manager.urls")),  # Include the 'media_upload' app's URLs
 ]
 
 if settings.DEBUG:
