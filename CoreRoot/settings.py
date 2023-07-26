@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'core.post',
     'core.comment',
     'core.mediaItems',
-    'core.media_uploader',
+    'core.media_manager',
     'corsheaders',
     'debug_toolbar',
 ]

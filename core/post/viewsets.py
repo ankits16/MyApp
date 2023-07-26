@@ -8,7 +8,6 @@ from core.post.models import Post
 from core.mediaItems.serializers import MediaItemSerializer
 from core.post.serializers import PostSerializer
 from core.auth.permissions import UserPermission
-from .url_factory import LocalMediaURLFactory
 
 class PostViewSet(AbstractViewSet):
     http_method_names = ('post', 'get', 'put', 'delete')
@@ -33,7 +32,6 @@ class PostViewSet(AbstractViewSet):
         post_serializer.is_valid(raise_exception=True)
         post = post_serializer.save()
 
-        url_factory = LocalMediaURLFactory()
         media_items = []
         for media_item_data in media_items_data:
             file_name = media_item_data.pop('file_name')
@@ -48,10 +46,12 @@ class PostViewSet(AbstractViewSet):
 
              # Generate the URL based on the provided file name
             file_extension = os.path.splitext(file_name)[1]
-            file_path = url_factory.generate_url(post.public_id.hex, media_item.public_id.hex, file_extension)
-
+        
             # Set the dynamically generated URL for the media item
-            media_item.url = {'file_path' : file_path} 
+            media_item.url = {
+                'file_path' : os.path.join(post.public_id.hex, f'{media_item.public_id.hex}{file_extension}'),
+                'original_file_name' : file_name
+                } 
             media_item.save()
 
             media_items.append(media_item)
