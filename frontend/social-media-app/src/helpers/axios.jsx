@@ -6,7 +6,7 @@ import {
   getUser,
 } from "../hooks/user.actions";
 
-export const BASE_URL = "http://localhost:8000/";
+export const BASE_URL = "http://localhost:8000";
 export const BASE_URL_API = "http://localhost:8000/api";
 const axiosService = axios.create({
   baseURL: BASE_URL_API,

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap"
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../helpers/axios";
+import { BASE_URL_API } from "../../helpers/axios";
 
 export default function RegistrationForm() {
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function RegistrationForm() {
             last_name: form.last_name,
             bio: form.bio,
         }
-        axios.post(`${BASE_URL}/auth/register/`, data)
+        axios.post(`${BASE_URL_API}/auth/register/`, data)
         .then((response) => {
             localStorage.setItem("auth", JSON.stringify({
                 accessToken: response.data.access,
