@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
 from django.conf import settings
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'core.post',
     'core.comment',
     'core.mediaItems',
+    'core.media_uploader',
     'corsheaders',
     'debug_toolbar',
 ]
@@ -176,3 +178,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+# medi items stored locally
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_media_items')  # The directory where media files will be stored locally

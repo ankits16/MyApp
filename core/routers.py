@@ -7,6 +7,7 @@ from core.auth.viewsets import(
     )
 from core.post.viewsets import PostViewSet
 from core.comment.viewsets import CommentViewSet
+from  core.mediaItems.views import MediaItemUploadView
 
 router = routers.SimpleRouter()
 
@@ -24,6 +25,7 @@ router.register(r'post', PostViewSet, basename='post')
 # /post/{post_pk}/comment/ - Handles CRUD operations for comments associated with a specific post.
 posts_router = routers.NestedSimpleRouter(router, r'post', lookup='post')
 posts_router.register(r'comment', CommentViewSet, basename='post-comment')
+# posts_router.register(r'media-items', MediaItemUploadView, basename='post-media-items')
 urlpatterns = [
    *router.urls,
    *posts_router.urls

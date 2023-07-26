@@ -40,18 +40,18 @@ const CreatePost = (props) => {
   };
 
   const handleMediaItemChange = (name, value, index) => {
-    const updatedMediaItems = form.mediaItems.map((mediaItem) =>{
-      if (name === 'media-item-notes'){
-        var updatedMeta = {...mediaItem.meta}
-        updatedMeta['notes'] = value;
-        var updatedMediaItem = {...mediaItem}
-        updatedMediaItem.meta = updatedMeta
+    const updatedMediaItems = form.mediaItems.map((mediaItem) => {
+      if (name === "media-item-notes") {
+        var updatedMeta = { ...mediaItem.meta };
+        updatedMeta["notes"] = value;
+        var updatedMediaItem = { ...mediaItem };
+        updatedMediaItem.meta = updatedMeta;
         return updatedMediaItem;
       }
-      return mediaItem.index === index ? { ...mediaItem, [name]: value } : mediaItem
-    }
-      
-    );
+      return mediaItem.index === index
+        ? { ...mediaItem, [name]: value }
+        : mediaItem;
+    });
     setForm({ ...form, mediaItems: updatedMediaItems });
   };
 
@@ -89,7 +89,7 @@ const CreatePost = (props) => {
     const data = {
       author: user.id,
       body: form.body,
-      media_items: form.mediaItems
+      media_items: form.mediaItems,
     };
     axiosService
       .post("/post/", data)
@@ -101,12 +101,10 @@ const CreatePost = (props) => {
           message: "Post created 🚀",
           show: true,
         });
-        // setToastMessage("Post created 🚀");
-        // setToastType("success");
-        // setShowToast(true);
         setForm({
           body: "",
-        mediaItems: [],});
+          mediaItems: [],
+        });
         refresh();
       })
       .catch((err) => {
