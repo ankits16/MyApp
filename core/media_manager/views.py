@@ -15,19 +15,22 @@ class MediaUploaderView(APIView):
             return Response({"error": "File or path not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         file = request.data["file"]
-        upload_path = request.data["path"]
+        path = request.data["path"]
 
-        if ".." in os.path.abspath(upload_path):
+        if ".." in os.path.abspath(path):
             return Response({"error": "Invalid upload path"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Extract post ID and media item ID from the provided path
+        post_id, media_item_id = os.path.split(path)
+
         # Ensure the upload path is inside the media folder
-        upload_path = os.path.join(settings.MEDIA_ROOT, upload_path)
+        upload_path = os.path.join(settings.MEDIA_ROOT, post_id)
 
         # Create the necessary directories if they don't exist
         os.makedirs(upload_path, exist_ok=True)
 
-        file_name = file.name
-        file_path = os.path.join(upload_path, file_name)
+        # file_name = os.path.basename(file.name)
+        file_path = os.path.join(upload_path, media_item_id)
 
         with open(file_path, "wb") as destination_file:
             for chunk in file.chunks():
