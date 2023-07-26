@@ -40,7 +40,7 @@ class PostViewSet(AbstractViewSet):
             media_item_data['post'] = post.public_id
             # media_item_data['url'] = url
 
-            media_item_serializer = MediaItemSerializer(data=media_item_data)
+            media_item_serializer = MediaItemSerializer(data=media_item_data, context=self.get_serializer_context())
             media_item_serializer.is_valid(raise_exception=True)
             media_item = media_item_serializer.save()
 
