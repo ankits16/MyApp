@@ -21,11 +21,11 @@ const MediaItemInput = ({ mediaItem, onChange, onDelete }) => {
   const getPreviewComponent = () => {
     switch (mediaItem.type) {
       case 'image':
-        return <ImagePreview file={mediaItem.file} />;
+        return <ImagePreview url={URL.createObjectURL(mediaItem.file)} />;
       case 'video':
-        return <VideoPreview file={mediaItem.file} />;
+        return <VideoPreview url={URL.createObjectURL(mediaItem.file)} />;
       case 'pdf':
-        return <PdfPreview file={mediaItem.file} />;
+        return <PdfPreview url={URL.createObjectURL(mediaItem.file)} />;
       default:
         return null;
     }

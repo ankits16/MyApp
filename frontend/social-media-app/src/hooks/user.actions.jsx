@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../helpers/axios";
+import { BASE_URL_API } from "../helpers/axios";
 
 const useUserActions = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const useUserActions = () => {
 
   function login(data) {
     return axios
-      .post(`${BASE_URL}/auth/login/`, data)
+      .post(`${BASE_URL_API}/auth/login/`, data)
       .then((res) => {
         setUserData(res.data);
         navigate("/");

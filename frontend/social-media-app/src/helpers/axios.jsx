@@ -6,9 +6,10 @@ import {
   getUser,
 } from "../hooks/user.actions";
 
-export const BASE_URL = "http://localhost:8000/api";
+export const BASE_URL = "http://localhost:8000/";
+export const BASE_URL_API = "http://localhost:8000/api";
 const axiosService = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL_API,
   headers: {
     "Content-Type": "application/json",
   },
@@ -33,7 +34,7 @@ const refreshAuthLogic = async (failedRequest) => {
         refresh: getRefreshToken(),
       },
       {
-        baseURL: BASE_URL,
+        baseURL: BASE_URL_API,
       }
     )
     .then((resp) => {

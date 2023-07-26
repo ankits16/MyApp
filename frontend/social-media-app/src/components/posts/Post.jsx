@@ -3,13 +3,16 @@ import { Card, Dropdown, Image } from "react-bootstrap";
 import { randomAvatar } from "../../utils";
 import { format } from "timeago.js";
 import { CommentOutlined, LikeFilled, MoreOutlined } from "@ant-design/icons";
-import axiosService from "../../helpers/axios";
+import axiosService, { BASE_URL } from "../../helpers/axios";
 import Toaster from "../Toaster";
 import { getUser } from "../../hooks/user.actions";
 import { Link } from "react-router-dom";
 import UpdatePost from "./UpdatePost";
 import ReactLinkify from "react-linkify";
 import MoreToggleIcon from "../menu/MoreToggleIcon";
+import ImagePreview from "./media-preview/ImagePreview";
+import VideoPreview from "./media-preview/VideoPreview";
+import PdfPreview from "./media-preview/PdfPreview";
 const Post = (props) => {
   const { post, refresh, isSinglePost } = props;
   const [showToast, setShowToast] = useState(false);
@@ -73,6 +76,24 @@ const Post = (props) => {
             {post.body}
           </ReactLinkify>
         </Card.Text>
+         {/* Render media items if they exist */}
+         {post.media_items && post.media_items.length > 0 && (
+          <div>
+            {post.media_items.map((mediaItem) => {
+              const fullUrl = BASE_URL + mediaItem.url;
+              switch (mediaItem.type) {
+                case 'image':
+                  return <ImagePreview key={mediaItem.id} url={fullUrl} />;
+                case 'video':
+                  return <VideoPreview key={mediaItem.id} url={fullUrl} />;
+                case 'pdf':
+                  return <PdfPreview key={mediaItem.id} url={fullUrl} />;
+                default:
+                  return null; // Skip unknown media types or handle them as needed
+              }
+            })}
+          </div>
+        )}
         <div className="d-flex flex-row justify-content-between">
           <div className="d-flex flex-row">
             <LikeFilled

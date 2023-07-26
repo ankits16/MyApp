@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import "./css/mediaPreviewStyles.css";
 
-export default function PdfPreview({file}) {
-    return (
-        <iframe
-          title="File preview"
-          src={URL.createObjectURL(file)}
-          style={{ width: '100%', height: '100%', border: 'none' }}
-        />
-      );
+export default function PdfPreview({ url }) {
+  return (
+    <div className="media-box">
+      <div className="pdf-icon">PDF</div>
+      <a href={url} target="_blank" rel="noopener noreferrer">
+        View PDF
+      </a>
+    </div>
+  );
 }
