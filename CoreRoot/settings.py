@@ -9,11 +9,22 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import ptvsd
 import os
 from pathlib import Path
 from datetime import timedelta
 from django.conf import settings
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# if os.environ.get('PTYVSD_DEBUG', '').lower() == 'true':
+#     # Allow other computers to attach to the Django application at this IP address and port.
+#     ptvsd.enable_attach(address=('0.0.0.0', 3000))
+
+#     # Pause the application until the debugger is attached.
+#     ptvsd.break_into_debugger()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -94,9 +105,9 @@ WSGI_APPLICATION = 'CoreRoot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'coredb',
-        'USER': 'ankit',
-        'PASSWORD': 'pass',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': '',
     }
@@ -169,7 +180,9 @@ if settings.DEBUG:
 # cors
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://127.0.0.1:3000"
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3002",
+    "http://localhost:3002",
 ]
 
 # this is for django debug toolbar
@@ -182,3 +195,11 @@ INTERNAL_IPS = [
 # medi items stored locally
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_media_items')  # The directory where media files will be stored locally
+
+
+# Allow other computers to attach to the Django application at this IP address and port.
+
+# ptvsd.enable_attach(address=('0.0.0.0:8000', 3000))
+# print('django will wait........')
+# Pause the application until the debugger is attached.
+# ptvsd.wait_for_attach()

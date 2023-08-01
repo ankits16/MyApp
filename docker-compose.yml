@@ -1,25 +1,26 @@
-version: '3'
+version: "3"
 
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
-      - "8000:8000"
+      - 8000:8000
+      - 4000:4000 # debugging service (ptvsd)
     volumes:
       - .:/app
     environment:
       - DEBUG=${DEBUG}
       - DB_HOST=db
-      
+
     depends_on:
       - db
     # command: >
     #   sh -c "./wait-for-it.sh db:5432 -- python manage.py makemigrations &&
     #          python manage.py migrate &&
     #          python manage.py runserver 0.0.0.0:8000"
-    command: python manage.py runserver 0.0.0.0:8000
 
   db:
     image: postgres:14.5

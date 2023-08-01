@@ -1,24 +1,29 @@
-# Use the official Python image as a base image
-FROM python:3.8
+# Dockerfile
 
-# Set environment variables for Python buffering and enable Docker in development mode
-ENV PYTHONUNBUFFERED 1
+# Use the official Python image as the base image
+FROM python:3.9
+
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
-ENV DEBUG 1
+ENV PYTHONUNBUFFERED 1
 
-# Set the working directory inside the container
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends postgresql-client && \
+    apt-get clean
+
+# Set the working directory in the container
 WORKDIR /app
 
-# Install project dependencies
+# Install Python dependencies
 COPY requirements.txt /app/
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy the project files into the container
+# Copy the Django project code to the container
 COPY . /app/
 
-# Copy the wait-for-it script to the container
-COPY wait-for-it.sh /app/
+# Expose the port that Django runs on (change this to your Django app port)
+EXPOSE 8000
 
-# Run Django development server using the wait-for-it script
-CMD ["./wait-for-it.sh", "db", "--", "./manage.py", "runserver", "0.0.0.0:8000"]
+# Command to run Django development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
