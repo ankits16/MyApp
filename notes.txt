@@ -10,3 +10,21 @@
 Migrations related issues
  : python manage.py showmigrations
  : python manage.py migrate core_post --fake
+
+
+Graphical representations:
+python manage.py graph_models -a -o models.png
+
+Containerize the django project 
+    1) Create docker file
+    2) create a docker compose
+    3) to add a debugger we used ptvsd 
+    4) We exposed a port 4000 which can be used to attach the debugger
+
+ For adding celery and rabbit MQ
+    1) Install rabbit MQ
+    2) Check status of rabbit mq
+    3) start celery using # celery -A CoreRoot.celery worker -l info
+    4) To view celery tasks in admin use django_celery_results # python manage.py migrate django_celery_results
+         this will add table in postgres
+    5)

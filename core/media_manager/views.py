@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from core.mediaItems.models import MediaItem
+from core.tasks import send_post_email
 
 class MediaUploaderView(APIView):
     parser_classes = (MultiPartParser,)
@@ -35,5 +37,15 @@ class MediaUploaderView(APIView):
         with open(file_path, "wb") as destination_file:
             for chunk in file.chunks():
                 destination_file.write(chunk)
+
+        try:
+            media_item = MediaItem.get_object_by_public_id(media_item_id)
+            if media_item.state != 'UPLOADED':
+                media_item.state = 'UPLOADED'
+                media_item.save()
+        except MediaItem.DoesNotExist:
+            return Response({"error": "MediaItem not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
 
         return Response({"message": "File uploaded successfully"}, status=status.HTTP_200_OK)

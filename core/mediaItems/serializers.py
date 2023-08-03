@@ -31,7 +31,7 @@ class MediaItemSerializer(AbstractSerializer):
     
     class Meta:
         model = MediaItem
-        fields = ['id', 'type', 'meta', 'url', 'post', 'parent_post_id', 'created', 'updated']
+        fields = ['id', 'state', 'type', 'meta', 'url', 'post', 'parent_post_id', 'created', 'updated']
         extra_kwargs = {
             'url': {'required': False},
             'post': {'required': False}

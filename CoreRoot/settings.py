@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import ptvsd
 import os
 from pathlib import Path
 from datetime import timedelta
@@ -46,14 +45,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework_simplejwt',
-    'rest_framework',
+    #C
     'core',
     'core.user',
     'core.auth',
@@ -62,7 +54,19 @@ INSTALLED_APPS = [
     'core.mediaItems',
     'core.media_manager',
     'corsheaders',
+    #D
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     'debug_toolbar',
+    'django_celery_results',
+    'django_extensions',
+    #R
+    'rest_framework_simplejwt',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -104,7 +108,7 @@ WSGI_APPLICATION = 'CoreRoot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
@@ -197,9 +201,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_media_items')  # The directory where media files will be stored locally
 
 
-# Allow other computers to attach to the Django application at this IP address and port.
-
-# ptvsd.enable_attach(address=('0.0.0.0:8000', 3000))
-# print('django will wait........')
-# Pause the application until the debugger is attached.
-# ptvsd.wait_for_attach()
+# smtp configurations
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'ankit.sachan16@gmail.com'
+EMAIL_HOST_PASSWORD = 'muxwlbqhhgimyont'
