@@ -103,11 +103,12 @@ const CreatePost = (props) => {
     refresh();
   };
 
-  const uploadFileForMediaItem = async (filePath, file) => {
+  const uploadFileForMediaItem = async (mediaItem, file) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("path", filePath);
+      formData.append("public_id", mediaItem.id);
+      formData.append("path", mediaItem.url.file_path);
       const uploadResponse = await axiosService.post("media/upload/", formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // Set the correct content type for file upload
@@ -160,7 +161,7 @@ const CreatePost = (props) => {
               mediaItem.url.file_path
             ) {
               return uploadFileForMediaItem(
-                mediaItem.url.file_path,
+                mediaItem,
                 formMediaItem.file
               );
             }
