@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from core.mediaItems.models import MediaItem
 from core.tasks import send_media_items_uploaded_email
 
+
 class MediaUploaderView(APIView):
     parser_classes = (MultiPartParser,)
 
@@ -40,20 +41,24 @@ class MediaUploaderView(APIView):
                 destination_file.write(chunk)
 
         try:
-            media_item = MediaItem.objects.get_object_by_public_id(media_item_id)
+            media_item = MediaItem.objects.get_object_by_public_id(
+                media_item_id)
             if media_item.state != 'UPLOADED':
                 media_item.state = 'UPLOADED'
                 media_item.save()
 
                 # Check if all media items for the post are uploaded
-                all_uploaded = media_item.post.media_items.filter(state='CREATED').count() == 0
+                all_uploaded = media_item.post.media_items.filter(
+                    state='CREATED').count() == 0
                 if all_uploaded:
                     # Trigger a Celery task to send the email
-                    send_media_items_uploaded_email.delay(media_item.post_id)
+                    request_data = {
+                        "scheme": request.scheme,
+                        "host": request.get_host(),
+                    }
+                    send_media_items_uploaded_email.delay(media_item.post_id, request_data)
 
         except MediaItem.DoesNotExist:
             return Response({"error": "MediaItem not found"}, status=status.HTTP_404_NOT_FOUND)
-
-
 
         return Response({"message": "File uploaded successfully"}, status=status.HTTP_200_OK)
