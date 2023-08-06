@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post</title>
+    <style>
+      .media-item-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+        display: inline-block;
+        vertical-align: top;
+        width: 200px;
+        text-align: center;
+      }
+      .media-item-image {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Media Items Uploaded</h1>
+    <p>Here goes your post</p>
+    <h2>{{ post.body }}</h2>
+    <div>
+      {% for media_item in post.media_items.all %}
+      <div class="media-item-box">
+        {% if media_item.type == 'image' %}
+        <img
+          class="media-item-image"
+          src="{{ scheme }}://{{ host }}{{root}}/{{ media_item.url.file_path }}"
+          alt="{{ media_item.url.original_file_name }}"
+        />
+        {% else %} {% if media_item.type == 'video' %}
+        <!-- Embed video player or show thumbnail -->
+        <p>Video: {{ media_item.url.original_file_name }}</p>
+        {% else %}
+        <p>PDF: {{ media_item.url.original_file_name }}</p>
+        {% endif %} {% endif %}
+        <p>{{ media_item.type }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>

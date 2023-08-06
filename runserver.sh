@@ -15,7 +15,7 @@ while port_available $port; do
 done
 
 # Start the Django development server on the available port
-python manage.py runserver $port
+python manage.py runserver $port & celery -A CoreRoot.celery worker -l info
 
 # to un this script
 #chmod +x runserver.sh

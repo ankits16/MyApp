@@ -5,9 +5,11 @@ from rest_framework.decorators import action
 
 from core.abstract.viewsets import AbstractViewSet
 from core.post.models import Post
+from core.mediaItems.models import MediaItem
 from core.mediaItems.serializers import MediaItemSerializer
 from core.post.serializers import PostSerializer
 from core.auth.permissions import UserPermission
+from django.db.models import OuterRef, Subquery, Count, F, IntegerField
 
 class PostViewSet(AbstractViewSet):
     http_method_names = ('post', 'get', 'put', 'delete')
@@ -16,7 +18,14 @@ class PostViewSet(AbstractViewSet):
 
 
     def get_queryset(self):
-        return Post.objects.all()
+        subquery = MediaItem.objects.filter(
+            post_id=OuterRef('pk'),
+            state='UPLOADED'
+        ).values('post_id').annotate(uploaded_count=Count('pk')).values('uploaded_count')
+        
+        return Post.objects.annotate(
+            total_media_count=Subquery(subquery)
+        ).filter(total_media_count=Subquery(subquery, output_field=IntegerField()))
     
     def get_object(self):
         obj = Post.objects.get_object_by_public_id(self.kwargs['pk'])
@@ -52,6 +61,7 @@ class PostViewSet(AbstractViewSet):
                 'file_path' : os.path.join(post.public_id.hex, f'{media_item.public_id.hex}{file_extension}'),
                 'original_file_name' : file_name
                 } 
+            media_item.state = 'CREATED'
             media_item.save()
 
             media_items.append(media_item)
