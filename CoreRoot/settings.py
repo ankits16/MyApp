@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_celery_results',
     'django_extensions',
+    'drf_yasg',
     #R
     'rest_framework_simplejwt',
     'rest_framework',
@@ -211,3 +212,8 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'ankit.sachan16@gmail.com'
 EMAIL_HOST_PASSWORD = 'muxwlbqhhgimyont'
+
+#swagger
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'CoreRoot.urls.api_info',  # This is the path to your API info function
+}
