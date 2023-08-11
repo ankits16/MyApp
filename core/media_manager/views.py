@@ -8,11 +8,46 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from core.mediaItems.models import MediaItem
 from core.tasks import send_media_items_uploaded_email
+from drf_yasg.utils import swagger_auto_schema, no_body
+from drf_yasg import openapi
 
 
 class MediaUploaderView(APIView):
     parser_classes = (MultiPartParser,)
 
+    @swagger_auto_schema(
+        operation_description="Upload a media file and associate it with a post.",
+        # request_body=MySerializer,  # Replace with your request serializer class
+        manual_parameters=[
+            openapi.Parameter(
+                name="public_id",
+                in_=openapi.IN_FORM,
+                type=openapi.TYPE_STRING,
+                description="The public ID for the media item.",
+                required=True,
+                example="abcd1234",
+            ),
+            openapi.Parameter(
+                name="file",
+                in_=openapi.IN_FORM,
+                type=openapi.TYPE_FILE,
+                description="The media file to upload.",
+                required=True,
+            ),
+            openapi.Parameter(
+                name="path",
+                in_=openapi.IN_FORM,
+                type=openapi.TYPE_STRING,
+                description="The path to save the media file.",
+                required=True,
+                example="32d4f073f77148f9afe72f23aaca2905/myfile.jpg",
+            ),
+        ],
+        responses={
+            status.HTTP_200_OK: "Successful response",
+            status.HTTP_400_BAD_REQUEST: "Bad request",
+        }
+    )
     def post(self, request):
         if "file" not in request.data or "path" not in request.data:
             return Response({"error": "File or path not provided"}, status=status.HTTP_400_BAD_REQUEST)
@@ -56,7 +91,8 @@ class MediaUploaderView(APIView):
                         "scheme": request.scheme,
                         "host": request.get_host(),
                     }
-                    send_media_items_uploaded_email.delay(media_item.post_id, request_data)
+                    send_media_items_uploaded_email.delay(
+                        media_item.post_id, request_data)
 
         except MediaItem.DoesNotExist:
             return Response({"error": "MediaItem not found"}, status=status.HTTP_404_NOT_FOUND)
