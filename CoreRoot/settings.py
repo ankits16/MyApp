@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_extensions',
     'drf_yasg',
+    #P
+    'products',
     #R
     'rest_framework_simplejwt',
     'rest_framework',

@@ -1,7 +1,7 @@
 #A
 asgiref==3.7.2
 #B
-backports.zoneinfo==0.2.1
+# backports.zoneinfo==0.2.1
 #C
 celery
 #D
@@ -21,7 +21,8 @@ PyJWT==2.7.0
 pytz==2023.3
 ptvsd # debugger for docker
 python-dotenv #to read values from .env files
-pygraphviz #for django-extensions
+# pygraphviz #for django-extensions (if it fails do brew install graphviz before pip install)
+pytube #download youtube videos
 #S
 sqlparse==0.4.4
 sqlalchemy # to support postgres as results backend for celery

@@ -12,3 +12,9 @@ Swagger:
 	1. Added swagger
 	2. Capability to execute apis from browser itself
 	3. add descriptions and parameters to documentation
+
+Debugger for Celery:
+	1. Create a new configration in launch.json for Celery
+	2. run that configuration independently in a terminal
+
+Micoroservices:

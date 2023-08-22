@@ -9,7 +9,9 @@ from core.mediaItems.models import MediaItem
 from core.mediaItems.serializers import MediaItemSerializer
 from core.post.serializers import PostSerializer
 from core.auth.permissions import UserPermission
-from django.db.models import OuterRef, Subquery, Count, F, IntegerField
+from core.tasks import download_associated_youtube_video
+
+from django.db.models import OuterRef, Subquery, Count, F, IntegerField, Q
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -20,14 +22,15 @@ class PostViewSet(AbstractViewSet):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        subquery = MediaItem.objects.filter(
-            post_id=OuterRef('pk'),
-            state='UPLOADED'
-        ).values('post_id').annotate(uploaded_count=Count('pk')).values('uploaded_count')
+        return Post.objects.all()
+        # subquery = MediaItem.objects.filter(
+        #     post_id=OuterRef('pk'),
+        #     state='UPLOADED'
+        # ).values('post_id').annotate(uploaded_count=Count('pk')).values('uploaded_count')
 
-        return Post.objects.annotate(
-            total_media_count=Subquery(subquery)
-        ).filter(total_media_count=Subquery(subquery, output_field=IntegerField()))
+        # return Post.objects.annotate(
+        #     total_media_count=Subquery(subquery)
+        # ).filter(total_media_count=Subquery(subquery, output_field=IntegerField()))
 
     def get_object(self):
         obj = Post.objects.get_object_by_public_id(self.kwargs['pk'])
@@ -69,6 +72,9 @@ class PostViewSet(AbstractViewSet):
         post = post_serializer.save()
 
         media_items = []
+        # if media_item_data.is_empty:
+        #     media_item.state = 'CREATED'
+
         for media_item_data in media_items_data:
             file_name = media_item_data.pop('file_name')
 
@@ -94,6 +100,7 @@ class PostViewSet(AbstractViewSet):
 
             media_items.append(media_item)
 
+        download_associated_youtube_video.delay(post.id)
         return Response(
             {
                 'post': post_serializer.data,
