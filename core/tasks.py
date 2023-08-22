@@ -69,7 +69,7 @@ def download_associated_youtube_video(post_id):
             video_stream.download(output_path=download_path, filename=video_filename)
             
             # Update the URL field of the MediaItem
-            media_item.url = {'file_path': video_path}
+            media_item.url = {'file_path':  os.path.join(folder_name, video_filename)}
             media_item.save()
             
     except Post.DoesNotExist:
