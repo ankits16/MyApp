@@ -28,3 +28,7 @@ Containerize the django project
     4) To view celery tasks in admin use django_celery_results # python manage.py migrate django_celery_results
          this will add table in postgres
     5)
+
+Microservices
+   1) get list of all url : python manage.py show_urls (this is part of django-extensions package)
+   2)
