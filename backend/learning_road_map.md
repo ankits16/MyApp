@@ -18,3 +18,8 @@ Debugger for Celery:
 	2. run that configuration independently in a terminal
 
 Micoroservices:
+
+	1. So created a transcript web service 
+	2. this webservice receives the url of a video, download it use google speech to text to generate the transcript
+	3. One thing was observed that celery was processing only the alternate tasks
+	4. So Dedicated queue was used 

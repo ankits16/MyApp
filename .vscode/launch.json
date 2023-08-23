@@ -47,18 +47,36 @@
       "name": "Django",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/manage.py",
+      "program": "${workspaceFolder}/backend/manage.py",
       "args": ["runserver", "--noreload"],
       "django": true,
       "console": "integratedTerminal"
     },
     {
-      "name": "Celery",
+      "name": "MediaProcessingService",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/media_processing_pipeline/media_processing_services/manage.py",
+      "args": ["runserver", "8003"],
+      "django": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Celery: BE",
       "type": "python",
       "request": "launch",
       "program": "/Users/ankit/opt/anaconda3/envs/myapp/bin/celery",
       "args": [ "-A", "CoreRoot", "worker", "--loglevel=info"],
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Celery : MediaProcessingService",
+      "type": "python",
+      "request": "launch",
+      "program": "/Users/ankit/opt/anaconda3/envs/myapp/bin/celery",
+      "args": [ "-A", "media_processing_services", "worker", "--loglevel=info", "--queues=transcription"],//using dedicated queue as few tasks were missing
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/media_processing_pipeline/media_processing_services"
     }
   ]
 }
