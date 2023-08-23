@@ -78,7 +78,6 @@ class MediaUploaderView(APIView):
         try:
             media_item = MediaItem.objects.get_object_by_public_id(
                 media_item_id)
-            media_item.state = ''
             if media_item.state != 'UPLOADED':
                 media_item.state = 'UPLOADED'
                 media_item.save()
