@@ -23,7 +23,7 @@ def get_unique_filename(extension):
 
 
 @shared_task(queue='transcription')
-def transcribe_task(task_id):
+def transcribe_task(task_id, process_id):
     print(f'start processing task {task_id}')
     task = TranscriptionTask.objects.get(pk=task_id)
     task.status = "PROCESSING"
@@ -46,7 +46,15 @@ def transcribe_task(task_id):
         task.status = "DONE"
         
         # Send results to callback URL
-        requests.post(task.callback_url, json={"transcript": transcript, "task_id": task_id})
+        requests.post(
+            task.callback_url,
+              json={
+                  "service_name":"tbd_transcript", 
+                  "result":{"transcript": transcript}, 
+                  "task_id": task_id, 
+                  "process_id": process_id
+                  }
+              )
     except Exception as e:
         task.status = "ERROR"
         task.result = str(e)

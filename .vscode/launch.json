@@ -44,11 +44,11 @@
 
   "configurations": [
     {
-      "name": "Django",
+      "name": "Main Backend",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/backend/manage.py",
-      "args": ["runserver", "--noreload"],
+      "args": ["runserver"],
       "django": true,
       "console": "integratedTerminal"
     },
@@ -67,7 +67,8 @@
       "request": "launch",
       "program": "/Users/ankit/opt/anaconda3/envs/myapp/bin/celery",
       "args": [ "-A", "CoreRoot", "worker", "--loglevel=info"],
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/backend"
     },
     {
       "name": "Celery : MediaProcessingService",
