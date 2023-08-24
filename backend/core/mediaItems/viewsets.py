@@ -26,3 +26,4 @@ class ProcessedMediaItemCallbackViewSet(AbstractViewSet):
         inference.save()
 
         return Response({"status": "Received and saved transcript"}, status=status.HTTP_201_CREATED)
+    

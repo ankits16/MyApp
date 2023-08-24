@@ -7,7 +7,6 @@ from core.auth.viewsets import(
     )
 from core.post.viewsets import PostViewSet
 from core.comment.viewsets import CommentViewSet
-from  core.mediaItems.views import MediaItemUploadView
 from core.mediaItems.viewsets import ProcessedMediaItemCallbackViewSet
 
 router = routers.SimpleRouter()
@@ -17,7 +16,7 @@ router.register(r'auth/register', RegisterViewSet, basename='auth-register')
 router.register(r'auth/login', LoginViewSet, basename='auth-login')
 router.register(r'auth/refresh', RefreshViewSet, basename='auth-refresh')
 router.register(r'post', PostViewSet, basename='post')
-router.register(r'processed_media_callback', ProcessedMediaItemCallbackViewSet, basename='transcription')
+router.register(r'processed_media_callback', ProcessedMediaItemCallbackViewSet, basename='processed_media_callback')
 
 # comment router 
 # The resulting URL patterns will include routes for the main router and the nested router, with the following structure:

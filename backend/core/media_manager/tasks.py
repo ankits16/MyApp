@@ -8,8 +8,8 @@ import json
 
 def send_media_for_transcription(media_url, process_id):
     
-    transcription_service_url = "http://127.0.0.1:8003/transcripts/"
-    callback_url = "http://localhost:8000/api/processed_media_callback/"
+    transcription_service_url = settings.TRANSCRIPTION_SERVICE_URL
+    callback_url = settings.CALLBACK_URL
     print (f"Sending media for transcript at {transcription_service_url} calback = {callback_url}")
     # Construct payload for the transcription microservice
 

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from core.abstract.serializers import AbstractSerializer
 from core.post.models import Post
+from core.mediaItems.models import ProcessedMediaItemResult
 from core.user.models import User
 from core.user.serializers import UserSerializer
 from core.mediaItems.serializers import MediaItemSerializer
@@ -51,3 +52,17 @@ class PostSerializer(AbstractSerializer):
         model = Post
         fields = ['id', 'author', 'body', 'media_items', 'edited', 'liked', 'likes_count', 'created', 'updated']
         read_only_fields = ['edited']
+
+
+class ProcessedMediaItemResultSerializer(AbstractSerializer):
+    media_item = serializers.SerializerMethodField()
+    post = serializers.SerializerMethodField()
+    class Meta:
+        model = ProcessedMediaItemResult
+        fields = ('id', 'post', 'media_item', 'service_name', 'output')
+
+    def get_media_item(self, obj):
+        return obj.media_item.public_id.hex
+    
+    def get_post(self, obj):
+        return obj.media_item.post.public_id.hex

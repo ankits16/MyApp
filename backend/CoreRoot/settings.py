@@ -219,3 +219,7 @@ EMAIL_HOST_PASSWORD = 'muxwlbqhhgimyont'
 SWAGGER_SETTINGS = {
     'DEFAULT_INFO': 'CoreRoot.urls.api_info',  # This is the path to your API info function
 }
+
+# media processing microservices
+TRANSCRIPTION_SERVICE_URL = "http://127.0.0.1:8003/transcripts/"
+CALLBACK_URL = "http://localhost:8000/api/processed_media_callback/"

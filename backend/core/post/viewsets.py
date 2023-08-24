@@ -5,9 +5,9 @@ from rest_framework.decorators import action
 
 from core.abstract.viewsets import AbstractViewSet
 from core.post.models import Post
-from core.mediaItems.models import MediaItem
+from core.mediaItems.models import MediaItem, ProcessedMediaItemResult
 from core.mediaItems.serializers import MediaItemSerializer
-from core.post.serializers import PostSerializer
+from core.post.serializers import PostSerializer, ProcessedMediaItemResultSerializer
 from core.auth.permissions import UserPermission
 from core.tasks import download_associated_youtube_video
 
@@ -130,3 +130,15 @@ class PostViewSet(AbstractViewSet):
         user.remove_like(post)
         serializer = self.serializer_class(post)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['get'], detail=True)  # Using 'get' here as an example
+    def processed_results(self, request, pk=None):
+        post = self.get_object()
+        
+        # Fetch processed results related to this post
+        results = ProcessedMediaItemResult.objects.filter(media_item__post=post)
+        
+        serialized_results = ProcessedMediaItemResultSerializer(results, many=True).data
+        
+        return Response(serialized_results, status=status.HTTP_200_OK)
+    
