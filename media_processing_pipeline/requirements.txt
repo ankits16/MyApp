@@ -1,9 +1,0 @@
-# A
-aiohttp
-# D
-django-background-tasks
-
-# F
-ffmpeg-python
-# G
-google-cloud-speech 
