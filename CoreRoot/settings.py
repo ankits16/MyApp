@@ -39,7 +39,13 @@ SECRET_KEY = 'django-insecure-y=t5-arepy8$g-9^$2kq)v4k8ibbeq^nplokl9h_t%$@zqe6#&
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.1',
+    'host.docker.internal',
+    'myapp.local'
+]
 
 
 # Application definition
@@ -222,4 +228,4 @@ SWAGGER_SETTINGS = {
 
 # media processing microservices
 TRANSCRIPTION_SERVICE_URL = "http://127.0.0.1:8003/transcripts/"
-CALLBACK_URL = "http://localhost:8000/api/processed_media_callback/"
+CALLBACK_URL = "http://host.docker.internal:8000/api/processed_media_callback/"

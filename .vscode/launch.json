@@ -47,7 +47,7 @@
       "name": "Main Backend",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/backend/manage.py",
+      "program": "${workspaceFolder}/manage.py",
       "args": ["runserver"],
       "django": true,
       "console": "integratedTerminal"
@@ -59,7 +59,7 @@
       "program": "/Users/ankit/opt/anaconda3/envs/myapp/bin/celery",
       "args": [ "-A", "CoreRoot", "worker", "--loglevel=info"],
       "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/backend"
+      // "cwd": "${workspaceFolder}/"
     },
    
   ]

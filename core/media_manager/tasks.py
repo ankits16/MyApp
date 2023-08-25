@@ -49,7 +49,12 @@ def send_media_for_processing(post_id, request):
             processing = ProcessedMediaItemResult.objects.create(media_item=media_item, service_name='test', output = {})
             processing.save()
             file_path =  media_item.url['file_path']
-            media_url = f'{ request.get("scheme") }://{request.get("host")}/{settings.MEDIA_URL}{file_path}'
+            if settings.DEBUG:
+                host = 'host.docker.internal:8000'
+            else:
+                host = request.get("host")
+            media_url = f'{ request.get("scheme") }://{host}/{settings.MEDIA_URL}{file_path}'
+            print(f'**** media url is {media_url}')
             send_media_for_transcription(media_url, processing.public_id.hex)
      except Post.DoesNotExist:
         pass  # H
