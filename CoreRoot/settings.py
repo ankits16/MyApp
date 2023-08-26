@@ -218,6 +218,16 @@ EMAIL_HOST_PASSWORD = 'ttt'
 #swagger
 SWAGGER_SETTINGS = {
     'DEFAULT_INFO': 'CoreRoot.urls.api_info',  # This is the path to your API info function
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'SECURITY': [{
+        'Bearer': []
+    }]
 }
 
 # media processing microservices

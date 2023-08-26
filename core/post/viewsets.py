@@ -45,7 +45,7 @@ class PostViewSet(AbstractViewSet):
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                'author': openapi.Schema(type=openapi.TYPE_STRING),
+                # 'author': openapi.Schema(type=openapi.TYPE_STRING),
                 'body': openapi.Schema(type=openapi.TYPE_STRING),
                 'media_items': openapi.Schema(
                     type=openapi.TYPE_ARRAY,
@@ -59,7 +59,7 @@ class PostViewSet(AbstractViewSet):
                     ),
                 ),
             },
-            required=['author', 'body', 'media_items'],
+            required=['body', 'media_items'],
         ),
         responses={
             status.HTTP_201_CREATED: "Successful creation",
@@ -68,6 +68,7 @@ class PostViewSet(AbstractViewSet):
     )
     def create(self, request, *args, **kwargs):
         post_data = request.data.copy()
+        post_data['author'] = request.user.public_id.hex
         media_items_data = post_data.pop('media_items', [])
 
         post_serializer = self.get_serializer(data=post_data)
