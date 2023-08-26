@@ -10,7 +10,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.CELERY_RESULT_BACKEND = 'django-db'
 # Configure Celery to use RabbitMQ as the message broker
 app.config_from_object('django.conf:settings', namespace='CELERY')
-app.conf.broker_url = 'pyamqp://guest@localhost//'  # Use your RabbitMQ URL
+app.conf.broker_url = 'pyamqp://guest@rabbitmq//' # Use your RabbitMQ URL
 
 app.autodiscover_tasks()
 

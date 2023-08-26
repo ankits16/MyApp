@@ -15,14 +15,17 @@ drf-nested-routers==0.93.4
 django-celery-results # see celery results in django admin
 django-extensions # for visual representation of model
 drf-yasg #swagger for interactive documentation
+debugpy
 #P
 psycopg2-binary==2.9.2
 PyJWT==2.7.0
 pytz==2023.3
-ptvsd # debugger for docker
+
 python-dotenv #to read values from .env files
 # pygraphviz #for django-extensions (if it fails do brew install graphviz before pip install)
 pytube #download youtube videos
+# R
+requests
 #S
 sqlparse==0.4.4
 sqlalchemy # to support postgres as results backend for celery

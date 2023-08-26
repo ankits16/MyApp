@@ -15,12 +15,16 @@ RUN apt-get update && \
 # Set the working directory in the container
 WORKDIR /app
 
+# Copy the Django project code to the container
+COPY . /app/
+
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
 # Install Python dependencies
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy the Django project code to the container
-COPY . /app/
+
 
 # Expose the port that Django runs on (change this to your Django app port)
 EXPOSE 8000

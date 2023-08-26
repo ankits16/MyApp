@@ -23,3 +23,9 @@ Micoroservices:
 	2. this webservice receives the url of a video, download it use google speech to text to generate the transcript
 	3. One thing was observed that celery was processing only the alternate tasks
 	4. So Dedicated queue was used 
+
+Dockerize the  Microservice and Main django app:
+	1. We use docker file to create an image
+	2. We use docker compose to execute and provide necessary configuraions
+	3. We use debugpy to debug django or celery shared taks. THis will be helpful for using breakpoints and all
+	4. docker-compose logs -f <service name> : to get logs for a running service

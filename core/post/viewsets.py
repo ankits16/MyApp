@@ -22,6 +22,7 @@ class PostViewSet(AbstractViewSet):
     serializer_class = PostSerializer
 
     def get_queryset(self):
+        print('all posts fetched')
         return Post.objects.all()
         # subquery = MediaItem.objects.filter(
         #     post_id=OuterRef('pk'),
@@ -134,7 +135,7 @@ class PostViewSet(AbstractViewSet):
     @action(methods=['get'], detail=True)  # Using 'get' here as an example
     def processed_results(self, request, pk=None):
         post = self.get_object()
-        
+        print(f'<<<<<, received processed_results {post}')
         # Fetch processed results related to this post
         results = ProcessedMediaItemResult.objects.filter(media_item__post=post)
         

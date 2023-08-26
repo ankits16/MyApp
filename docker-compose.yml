@@ -1,14 +1,16 @@
 version: "3"
 
 services:
-  web:
+  main_backend:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    # command: python manage.py runserver 0.0.0.0:8000 # run without debugger
+    command: python -m debugpy --listen 0.0.0.0:6001 --wait-for-client manage.py runserver 0.0.0.0:8000
     ports:
-      - 8000:8000
-      - 4000:4000 # debugging service (ptvsd)
+      - "8000:8000"
+      - "6001:6001"
+      # - 4000:4000 # debugging service (ptvsd)
     volumes:
       - .:/app
     environment:
@@ -17,10 +19,29 @@ services:
 
     depends_on:
       - db
-    # command: >
-    #   sh -c "./wait-for-it.sh db:5432 -- python manage.py makemigrations &&
-    #          python manage.py migrate &&
-    #          python manage.py runserver 0.0.0.0:8000"
+      - rabbitmq
+    restart: always
+
+  celery:
+    build: .
+    # command: ["./wait-for-it.sh", "rabbitmq:5673", "--", "celery", "-A", "CoreRoot", "worker", "--loglevel=info"]
+
+    # command: celery -A CoreRoot worker --loglevel=info
+    # command: python -m ptvsd --host 0.0.0.0 --port 5679 -m celery -A media_processing_services worker --loglevel=info -P solo
+    command: /bin/sh -c "python -m debugpy --wait-for-client --listen 0.0.0.0:6002 -m celery -A CoreRoot worker --loglevel=info"
+    volumes:
+      - .:/app
+    ports:
+      - "6002:6002"  # Expose the port for the debugger
+    depends_on:
+      - rabbitmq
+    restart: on-failure:5 
+
+  rabbitmq:
+    image: "rabbitmq"
+    ports:
+      - "15673:15672"
+      - "5673:5672"
 
   db:
     image: postgres:14.5

@@ -18,13 +18,6 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# if os.environ.get('PTYVSD_DEBUG', '').lower() == 'true':
-#     # Allow other computers to attach to the Django application at this IP address and port.
-#     ptvsd.enable_attach(address=('0.0.0.0', 3000))
-
-#     # Pause the application until the debugger is attached.
-#     ptvsd.break_into_debugger()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +30,7 @@ SECRET_KEY = 'django-insecure-y=t5-arepy8$g-9^$2kq)v4k8ibbeq^nplokl9h_t%$@zqe6#&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+RUNNING_IN_DOCKER_LOCALLY = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = [
@@ -123,8 +117,8 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': '',
+        'HOST': 'db', # os.environ.get('DB_HOST', 'localhost'),
+        'PORT': '5432',
     }
 }
 
@@ -227,5 +221,12 @@ SWAGGER_SETTINGS = {
 }
 
 # media processing microservices
-TRANSCRIPTION_SERVICE_URL = "http://127.0.0.1:8003/transcripts/"
-CALLBACK_URL = "http://host.docker.internal:8000/api/processed_media_callback/"
+if settings.RUNNING_IN_DOCKER_LOCALLY:
+    TRANSCRIPTION_SERVICE_URL = "http://host.docker.internal:8003/transcripts/"
+else:
+    TRANSCRIPTION_SERVICE_URL = "http://127.0.0.1:8003/transcripts/"
+
+if settings.RUNNING_IN_DOCKER_LOCALLY:
+    CALLBACK_URL = "http://host.docker.internal:8000/api/processed_media_callback/"
+else:
+    CALLBACK_URL = "http://127.0.0.1:8000/api/processed_media_callback/"

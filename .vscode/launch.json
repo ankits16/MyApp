@@ -61,6 +61,35 @@
       "console": "integratedTerminal",
       // "cwd": "${workspaceFolder}/"
     },
-   
+    {
+      "name": "Debugpy: Main: Attach Django",
+      "type": "python",
+      "request": "attach",
+      "connect": {
+        "host": "localhost",
+        "port": 6001
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}",
+          "remoteRoot": "/app"
+        }
+      ]
+    },
+    {
+      "name": "Debugpy: Main: Attach to Celery",
+      "type": "python",
+      "request": "attach",
+      "connect": {
+        "host": "localhost",
+        "port": 6002
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}",
+          "remoteRoot": "/app"
+        }
+      ]
+    }
   ]
 }

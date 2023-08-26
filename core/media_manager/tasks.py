@@ -49,7 +49,7 @@ def send_media_for_processing(post_id, request):
             processing = ProcessedMediaItemResult.objects.create(media_item=media_item, service_name='test', output = {})
             processing.save()
             file_path =  media_item.url['file_path']
-            if settings.DEBUG:
+            if settings.RUNNING_IN_DOCKER_LOCALLY:
                 host = 'host.docker.internal:8000'
             else:
                 host = request.get("host")
