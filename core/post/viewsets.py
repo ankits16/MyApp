@@ -2,6 +2,7 @@ import os
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 
 from core.abstract.viewsets import AbstractViewSet
 from core.post.models import Post
@@ -10,6 +11,7 @@ from core.mediaItems.serializers import MediaItemSerializer
 from core.post.serializers import PostSerializer, ProcessedMediaItemResultSerializer
 from core.auth.permissions import UserPermission
 from core.tasks import download_associated_youtube_video
+from core.media_manager.tasks import send_media_for_processing
 
 from django.db.models import OuterRef, Subquery, Count, F, IntegerField, Q
 from drf_yasg.utils import swagger_auto_schema
@@ -143,3 +145,13 @@ class PostViewSet(AbstractViewSet):
         
         return Response(serialized_results, status=status.HTTP_200_OK)
     
+    @action(methods=['post'], detail=True, permission_classes=[AllowAny])
+    def reprocess_post(self, request, pk=None):
+        post = self.get_object()
+        print(f'<<<<<, reprocess post {post}')
+        request_data = {
+                        "scheme": request.scheme,
+                        "host": request.get_host(),
+                    }
+        send_media_for_processing.delay(post.id, request_data)
+        return Response("Sending for reprocessing", status=status.HTTP_200_OK)
